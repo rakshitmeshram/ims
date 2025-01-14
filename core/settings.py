@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import sys
+import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -91,10 +92,10 @@ DATABASES = {
         'NAME': 'pfm-db',
         'ENFORCE_SCHEMA': False,
         'CLIENT': {
-            'host': 'mongodb+srv://shasum1729:crewNext03@pfm-db.dbytx.mongodb.net/?retryWrites=true&w=majority&appName=pfm-db',
-            'username': 'shasum1729',
-            'password': 'crewNext03',
-            'authMechanism': 'SCRAM-SHA-1',
+            'host': os.environ.get('MONGO_URI', 'localhost'),
+            'username': os.environ.get('USERNAME', ''),
+            'password': os.environ.get('PASSWORD', ''),
+            'authMechanism': os.environ.get('AUTH_MECHANISM', 'SCRAM-SHA-1'),
         }
     }
 }
@@ -150,3 +151,6 @@ LOGIN_REQUIRED_IGNORE_VIEW_NAMES = [                    # urls ignored by the lo
     'logout',
     'about',
 ]
+
+
+django_heroku.settings(locals())                         # settings for heroku deployment
